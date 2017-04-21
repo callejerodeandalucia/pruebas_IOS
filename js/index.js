@@ -66,35 +66,50 @@ function errorExit(){
 
 function geolocalizar(){
 	//console.log("geolocalizar");
+	alert("En geolocalizar");
 	if (navigator.geolocation) {
-		  var successFunction = function(position){
+		  alert("En navigator.geolocation Position:" + position);
+		  function successFunction(position){
+		      alert("En successFunction");
 			  coor_x = position.coords.longitude;
 			  coor_y = position.coords.latitude;
+			  alert("En successFunction X:" + coor_x);
 			  idEntidad = null;
+			  alert("En successFunction Y:" + coor_y);
 			  loading(false);
+			  
 			  cargarCategoria();
 		  };
-		  var errorFunction = function(){
-			  alert("Se ha producido un error al geolocalizar");
+		  function errorFunction(){
+			  alert("errorFunction");	
 			  loading(false);
+			  alert("Se ha producido un error al geolocalizar");
 		  };
 		  loading(true);
+		  alert("Antes navigator");	
 		  navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+		  alert("Despues navigator");	
 		} else {
+		  loading(false);
 		  alert("El navegador utilizado no soporta la geolocalización");
 		}
 }
 
 function cargarCategoria(cat){
 	var requestParam = "";
+	alert("Cargar Categorias 1");	
 	if(cat != null){
+		alert("Cargar Categorias 2");	
 		requestParam = "?id_categoria=" + cat.id;
 		pilaCategorias.push(cat);
 
 	}else{
+	    alert("Cargar Categorias 3");
 		requestParam = "?id_aplicacion=" + aplicacion.id;
 	}
+	alert("Cargar Categorias 4"); 
 	$("#contenidoCategorias").html("");
+	alert("Cargar Categorias 5");
 	$.mobile.changePage("#categorias");
 	loading(true);
 	$.ajax({
