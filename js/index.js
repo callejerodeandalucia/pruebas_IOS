@@ -66,50 +66,39 @@ function errorExit(){
 
 function geolocalizar(){
 	//console.log("geolocalizar");
-	alert("En geolocalizar");
 	if (navigator.geolocation) {
-		  alert("En navigator.geolocation Position:" + position);
-		  function successFunction(position){
-		      alert("En successFunction");
+		  var successFunction = function(position){
 			  coor_x = position.coords.longitude;
 			  coor_y = position.coords.latitude;
-			  alert("En successFunction X:" + coor_x);
 			  idEntidad = null;
-			  alert("En successFunction Y:" + coor_y);
 			  loading(false);
-			  
 			  cargarCategoria();
 		  };
-		  function errorFunction(){
-			  alert("errorFunction");	
+		  var errorFunction = function(){
+			  alert("Compruebe que tiene activada la ubicación del dispositivo y que se encuentra cerca del municipio Alhama de Almería.");
 			  loading(false);
-			  alert("Se ha producido un error al geolocalizar");
 		  };
-		  loading(true);
-		  alert("Antes navigator");	
-		  navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-		  alert("Despues navigator");	
+		  loading(true);	
+		  navigator.geolocation.getCurrentPosition(successFunction, errorFunction,{
+			maximumAge: 75000,
+			timeout: 7000
+		});
+		    
 		} else {
 		  loading(false);
 		  alert("El navegador utilizado no soporta la geolocalización");
 		}
 }
-
 function cargarCategoria(cat){
 	var requestParam = "";
-	alert("Cargar Categorias 1");	
 	if(cat != null){
-		alert("Cargar Categorias 2");	
 		requestParam = "?id_categoria=" + cat.id;
 		pilaCategorias.push(cat);
 
 	}else{
-	    alert("Cargar Categorias 3");
 		requestParam = "?id_aplicacion=" + aplicacion.id;
 	}
-	alert("Cargar Categorias 4"); 
 	$("#contenidoCategorias").html("");
-	alert("Cargar Categorias 5");
 	$.mobile.changePage("#categorias");
 	loading(true);
 	$.ajax({
